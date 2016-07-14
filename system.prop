@@ -58,6 +58,3 @@ telephony.lteOnCdmaDevice=1
 
 # WFD
 persist.debug.wfd.enable=1
-
-# PPUI
-ro.pixelplusui.maintainer=KostyaJRZ
