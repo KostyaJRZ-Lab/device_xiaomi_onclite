@@ -70,3 +70,6 @@ persist.debug.wfd.enable=1
 
 # PPUI
 ro.pixelplusui.maintainer=KostyaJRZ
+
+# Zygote preforking
+persist.device_config.runtime_native.usap_pool_enabled=true
