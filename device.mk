@@ -74,6 +74,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     AntHalService
 
+# ThemePicker
+PRODUCT_PACKAGES += \
+    ThemePicker \
+    messaging
+
 # Audio
 PRODUCT_PACKAGES += \
     android.hardware.audio@6.0-impl \
