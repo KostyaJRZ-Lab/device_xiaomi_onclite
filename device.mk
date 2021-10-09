@@ -208,6 +208,8 @@ PRODUCT_PACKAGES += \
     libwifi-hal-qcom
 
 PRODUCT_PACKAGES += \
+    android.hardware.gnss@1.1.vendor \
+    android.hardware.gnss@2.0.vendor \
     android.hardware.gnss@2.1 \
     android.hardware.gnss@2.1.vendor \
     android.hardware.gnss.measurement_corrections@1.1 \
@@ -304,6 +306,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     netutils-wrapper-1.0 \
     android.system.net.netd@1.0 \
+    android.system.net.netd@1.1.vendor \
     libandroid_net
 
 # OMX
@@ -348,7 +351,8 @@ PRODUCT_PACKAGES += \
 # Neural Networks
 PRODUCT_PACKAGES += \
     android.hardware.neuralnetworks@1.2 \
-    android.hardware.neuralnetworks@1.2.vendor
+    android.hardware.neuralnetworks@1.2.vendor \
+    android.hardware.neuralnetworks@1.3.vendor
 
 # Perfd (dummy)
 PRODUCT_PACKAGES += \
