@@ -122,6 +122,8 @@ PRODUCT_COPY_FILES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0.vendor \
+    android.hardware.bluetooth@1.1.vendor \
     audio.bluetooth.default \
     android.hardware.bluetooth.audio@2.0-impl \
     libbthost_if \
@@ -154,6 +156,8 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.1-impl \
     android.hardware.graphics.composer@2.1-service \
     android.hardware.graphics.mapper@2.0-impl-2.1 \
+    android.frameworks.displayservice@1.0 \
+    android.frameworks.displayservice@1.0.vendor \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service \
     gralloc.msm8953 \
@@ -165,7 +169,8 @@ PRODUCT_PACKAGES += \
     libqdMetaData.system \
     libgenlock \
     libtinyxml \
-    vendor.display.config@1.9
+    vendor.display.config@2.0 \
+    vendor.display.config@2.0.vendor
 
 # Doze mode
 #PRODUCT_PACKAGES += \
@@ -175,7 +180,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \
     android.hardware.drm@1.0-service \
-    android.hardware.drm@1.3-service.clearkey
+    android.hardware.drm@1.3-service.clearkey \
+    android.hardware.drm@1.3.vendor \
+    android.hardware.drm@1.2.vendor \
+    android.hardware.drm@1.1.vendor \
+    android.hardware.drm@1.0.vendor
 
 # Ebtables
 PRODUCT_PACKAGES += \
@@ -198,7 +207,18 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps/xtwifi.conf:$(TARGET_COPY_OUT_VENDOR)/etc/xtwifi.conf
 
 PRODUCT_PACKAGES += \
-    libwifi-hal-ctrl
+    libwifi-hal-ctrl \
+    libwifi-hal-qcom
+
+PRODUCT_PACKAGES += \
+    android.hardware.gnss@2.0 \
+    android.hardware.gnss@2.0.vendor \
+    android.hardware.gnss@1.0.vendor \
+    android.hardware.gnss@1.0 \
+    android.hardware.gnss.measurement_corrections@1.1 \
+    android.hardware.gnss.measurement_corrections@1.1.vendor \
+    android.hardware.gnss.visibility_control@1.0 \
+    android.hardware.gnss.visibility_control@1.0.vendor
 
 # Health HAL
 PRODUCT_PACKAGES += \
@@ -231,6 +251,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/idc/uinput-fpc.idc:$(TARGET_COPY_OUT_VENDOR)/usr/idc/uinput-fpc.idc \
     $(LOCAL_PATH)/configs/idc/uinput-goodix.idc:$(TARGET_COPY_OUT_VENDOR)/usr/idc/uinput-goodix.idc
 
+# Keymaster
+PRODUCT_PACKAGES += \
+    android.hardware.gatekeeper@1.0.vendor \
+    android.hardware.keymaster@4.1.vendor \
+    android.hardware.keymaster@4.0.vendor
+
 # keylayout
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/msm8953-snd-card-mtp_Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/msm8953-snd-card-mtp_Button_Jack.kl \
@@ -259,6 +285,48 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.onclite
 
+# LOS BoardConfig Flags
+BOARD_USES_ADRENO := true
+# Add qtidisplay to soong config namespaces
+SOONG_CONFIG_NAMESPACES += qtidisplay
+# Add supported variables to qtidisplay config
+SOONG_CONFIG_qtidisplay += \
+    drmpp \
+    headless \
+    llvmsa \
+    gralloc4 \
+    default
+# Set default values for qtidisplay config
+SOONG_CONFIG_qtidisplay_drmpp ?= false
+SOONG_CONFIG_qtidisplay_headless ?= false
+SOONG_CONFIG_qtidisplay_llvmsa ?= false
+SOONG_CONFIG_qtidisplay_gralloc4 ?= false
+SOONG_CONFIG_qtidisplay_default ?= true
+# Tell HALs that we're compiling an AOSP build with an in-line kernel
+TARGET_COMPILE_WITH_MSM_KERNEL := true
+# Enable media extensions
+TARGET_USES_MEDIA_EXTENSIONS := true
+# Allow building audio encoders
+TARGET_USES_QCOM_MM_AUDIO := true
+# Enable color metadata for every UM platform
+TARGET_USES_COLOR_METADATA := true
+# Mark GRALLOC_USAGE_EXTERNAL_DISP as valid gralloc bit
+TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS += | (1 << 13)
+# Mark GRALLOC_USAGE_PRIVATE_WFD as valid gralloc bit
+TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS += | (1 << 21)
+#
+MSM_VIDC_TARGET_LIST := msm8937 msm8953 msm8996
+QCOM_HARDWARE_VARIANT := msm8996
+QCOM_SOONG_NAMESPACE ?= hardware/qcom-caf/$(QCOM_HARDWARE_VARIANT)
+
+PRODUCT_SOONG_NAMESPACES += \
+    hardware/qcom-caf/common \
+    hardware/qcom-caf/msm8996/display \
+    hardware/qcom-caf/msm8996/audio \
+    hardware/qcom-caf/msm8996/media \
+    packages/apps/Bluetooth \
+    vendor/qcom/opensource/power
+
 # Media
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml::$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
@@ -274,6 +342,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     netutils-wrapper-1.0 \
     android.system.net.netd@1.0 \
+    android.system.net.netd@1.1 \
+    android.system.net.netd@1.0.vendor \
+    android.system.net.netd@1.1.vendor \
     libandroid_net
 
 # OMX
@@ -293,7 +364,14 @@ PRODUCT_PACKAGES += \
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power-service-qti \
-    vendor.qti.hardware.perf@2.0.vendor
+    vendor.qti.hardware.perf@2.0.vendor \
+    android.hardware.power@1.0.vendor \
+    android.hardware.power@1.1 \
+    android.hardware.power@1.1.vendor \
+    android.hardware.power@1.2 \
+    android.hardware.power@1.2.vendor \
+    android.hardware.power@1.3 \
+    android.hardware.power@1.3.vendor
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
@@ -339,9 +417,15 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
+    android.hardware.radio.deprecated@1.0 \
+    android.hardware.radio.deprecated@1.0.vendor \
     android.hardware.radio@1.4 \
-    android.hardware.radio.config@1.1 \
-    android.hardware.secure_element@1.0 \
+    android.hardware.radio@1.4.vendor \
+    android.hardware.radio.config@1.2 \
+    android.hardware.radio.config@1.2.vendor \
+    android.hardware.secure_element@1.0.vendor \
+    android.hardware.secure_element@1.2.vendor \
+    android.hardware.secure_element@1.1.vendor \
     librmnetctl \
     libcnefeatureconfig \
     libxml2 \
@@ -362,6 +446,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     android.hardware.sensors@1.0-service \
+    android.hardware.sensors@2.0 \
+    android.hardware.sensors@2.0.vendor \
+    android.hardware.sensors@2.0-impl \
+    android.hardware.sensors@2.0-service \
     libsensorndkbridge
 
 PRODUCT_COPY_FILES += \
@@ -375,7 +463,10 @@ PRODUCT_PACKAGES += \
 
 # USB HAL
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service.basic
+    android.hardware.usb@1.0-service \
+    android.hardware.usb@1.0.vendor \
+    android.hardware.usb@1.1 \
+    android.hardware.usb@1.1.vendor
 
 # Vibrator
 PRODUCT_PACKAGES += \
@@ -391,6 +482,8 @@ PRODUCT_COPY_FILES += \
 # Wifi
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
+    android.hardware.wifi@1.5 \
+    android.hardware.wifi@1.5.vendor \
     libcld80211 \
     libqsap_sdk \
     libQWiFiSoftApCfg \
@@ -416,3 +509,20 @@ PRODUCT_PACKAGES += \
 
 #PRODUCT_BOOT_JARS += \
 #    WfdCommon
+
+PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0 \
+    android.hardware.wifi@1.0.vendor \
+    android.hardware.wifi@1.1 \
+    android.hardware.wifi@1.1.vendor \
+    android.hardware.wifi@1.2 \
+    android.hardware.wifi@1.2.vendor \
+    android.hardware.wifi@1.3 \
+    android.hardware.wifi@1.3.vendor \
+    android.hardware.wifi.supplicant@1.0 \
+    android.hardware.wifi.supplicant@1.0.vendor \
+    android.hardware.wifi.supplicant@1.1 \
+    android.hardware.wifi.supplicant@1.1.vendor \
+    android.hardware.wifi.supplicant@1.2 \
+    android.hardware.wifi.supplicant@1.2.vendor
+
