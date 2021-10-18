@@ -78,3 +78,6 @@ persist.device_config.runtime_native.usap_pool_enabled=true
 
 # System
 persist.sys.binary_xml=false
+
+# RIL
+persist.sys.fflag.override.settings_provider_model=false
