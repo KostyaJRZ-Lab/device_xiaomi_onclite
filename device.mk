@@ -76,11 +76,6 @@ PRODUCT_PACKAGES += \
     AntHalService \
     com.dsi.ant.antradio_library
 
-# ThemePicker
-PRODUCT_PACKAGES += \
-    ThemePicker \
-    messaging
-
 # Audio
 PRODUCT_PACKAGES += \
     android.hardware.audio@6.0-impl \
