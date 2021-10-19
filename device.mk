@@ -138,6 +138,10 @@ PRODUCT_PACKAGES += \
     libstdc++.vendor \
     Snap
 
+# Disable Configstore
+PRODUCT_PACKAGES += \
+    disable_configstore
+
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapminfree=4m \
